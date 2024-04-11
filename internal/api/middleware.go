@@ -235,6 +235,17 @@ func (a *API) requireManualLinkingEnabled(w http.ResponseWriter, req *http.Reque
 	return ctx, nil
 }
 
+func (a *API) timeoutMiddleware(timeout time.Duration) func(http.Handler) http.Handler {
+	return func(next http.Handler) http.Handler {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			ctx, cancel := context.WithTimeout(r.Context(), timeout)
+			defer cancel()
+
+			next.ServeHTTP(w, r.WithContext(ctx))
+		})
+	}
+}
+
 func (a *API) databaseCleanup(cleanup *models.Cleanup) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
