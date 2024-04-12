@@ -127,6 +127,8 @@ func NewAPIWithVersion(ctx context.Context, globalConfig *conf.GlobalConfigurati
 	r.Route("/", func(r *router) {
 		r.UseBypass(logger)
 		r.Use(api.isValidExternalHost)
+		// TODO: gate this and perhaps make duration configurable
+		r.UseBypass(api.timeoutMiddleware(25 * time.Second))
 
 		r.Get("/settings", api.Settings)
 
