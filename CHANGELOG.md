@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.149.0](https://github.com/supabase/auth/compare/v2.148.0...v2.149.0) (2024-04-12)
+
+
+### Features
+
+* refactor generate accesss token to take in request ([#1531](https://github.com/supabase/auth/issues/1531)) ([e4f2b59](https://github.com/supabase/auth/commit/e4f2b59e8e1f8158b6461a384349f1a32cc1bf9a))
+
 ## [2.148.0](https://github.com/supabase/auth/compare/v2.147.1...v2.148.0) (2024-04-10)
 
 
