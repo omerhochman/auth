@@ -102,7 +102,7 @@ func (a *API) sendPhoneConfirmation(ctx context.Context, r *http.Request, tx *st
 				OTP:    otp,
 			}
 			output := hooks.SendSMSOutput{}
-			err := a.invokeHook(ctx, tx, r, &input, &output, a.config.Hook.SendSMS.URI)
+			err := a.invokeHook(tx, r, &input, &output, a.config.Hook.SendSMS.URI)
 			if err != nil {
 				return "", err
 			}

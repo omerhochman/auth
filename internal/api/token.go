@@ -164,7 +164,7 @@ func (a *API) ResourceOwnerPasswordGrant(ctx context.Context, w http.ResponseWri
 			Valid:  isValidPassword,
 		}
 		output := hooks.PasswordVerificationAttemptOutput{}
-		err := a.invokeHook(ctx, nil, r, &input, &output, a.config.Hook.PasswordVerificationAttempt.URI)
+		err := a.invokeHook(nil, r, &input, &output, a.config.Hook.PasswordVerificationAttempt.URI)
 		if err != nil {
 			return err
 		}
@@ -292,7 +292,6 @@ func (a *API) PKCE(ctx context.Context, w http.ResponseWriter, r *http.Request) 
 }
 
 func (a *API) generateAccessToken(r *http.Request, tx *storage.Connection, user *models.User, sessionId *uuid.UUID, authenticationMethod models.AuthenticationMethod) (string, int64, error) {
-	ctx := r.Context()
 	config := a.config
 	if sessionId == nil {
 		return "", 0, internalServerError("Session is required to issue access token")
@@ -339,7 +338,7 @@ func (a *API) generateAccessToken(r *http.Request, tx *storage.Connection, user 
 
 		output := hooks.CustomAccessTokenOutput{}
 
-		err := a.invokeHook(ctx, tx, nil, &input, &output, a.config.Hook.CustomAccessToken.URI)
+		err := a.invokeHook(tx, r, &input, &output, a.config.Hook.CustomAccessToken.URI)
 		if err != nil {
 			return "", 0, err
 		}

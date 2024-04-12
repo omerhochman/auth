@@ -178,7 +178,7 @@ func (a *API) runHTTPHook(r *http.Request, hookConfig conf.ExtensibilityPointCon
 // transaction is opened. If calling invokeHook within a transaction, always
 // pass the current transaction, as pool-exhaustion deadlocks are very easy to
 // trigger.
-func (a *API) invokeHook(ctx context.Context, conn *storage.Connection, r *http.Request, input, output any, uri string) error {
+func (a *API) invokeHook(conn *storage.Connection, r *http.Request, input, output any, uri string) error {
 	var err error
 	var response []byte
 	u, err := url.Parse(uri)
@@ -204,12 +204,10 @@ func (a *API) invokeHook(ctx context.Context, conn *storage.Connection, r *http.
 			if httpCode == 0 {
 				httpCode = http.StatusInternalServerError
 			}
-
 			httpError := &HTTPError{
 				HTTPStatus: httpCode,
 				Message:    hookOutput.HookError.Message,
 			}
-
 			return httpError.WithInternalError(&hookOutput.HookError)
 		}
 		return nil

@@ -242,7 +242,7 @@ func (a *API) VerifyFactor(w http.ResponseWriter, r *http.Request) error {
 		}
 
 		output := hooks.MFAVerificationAttemptOutput{}
-		err := a.invokeHook(ctx, nil, r, &input, &output, a.config.Hook.MFAVerificationAttempt.URI)
+		err := a.invokeHook(nil, r, &input, &output, a.config.Hook.MFAVerificationAttempt.URI)
 		if err != nil {
 			return err
 		}
